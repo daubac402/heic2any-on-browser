@@ -1,0 +1,33 @@
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- https://github.com/alexcorvi/heic2any -->
+  <script src="/js/heic2any.min.js"></script>
+</head>
+
+<body>
+  <h1>Test heic2any - convert HEIC to PNG at client browser</h1>
+
+  <img src="/img/loading.svg" heic_src="/img/1.heic">
+  <img src="/img/loading.svg" heic_src="/img/2.heic">
+</body>
+
+<style>
+  img {
+    max-width: 500px;
+  }
+</style>
+
+<script>
+  // fetching the heic image
+  $(function(){
+    $('img[heic_src]').each(function() {
+      fetch($(this).attr('heic_src'))
+        .then((res) => res.blob())
+        .then((blob) => heic2any({ blob }))
+        .then((conversionResult) => {
+          var imageUrl = URL.createObjectURL(conversionResult)
+          $(this).attr('src', imageUrl)
+        })
+    })
+  })
+</script>
